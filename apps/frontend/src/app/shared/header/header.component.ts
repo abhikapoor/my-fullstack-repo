@@ -17,6 +17,8 @@ import * as AuthActions from '../../core/store/auth/auth.actions';
 })
 export class HeaderComponent {
   private store = inject(Store);
+  adminIcon = 'assets/admin.ico';
+  userIcon = 'assets/user.ico';
 
   isAdmin = computed(() => this.currentUser()?.role === Role.ADMIN);
 

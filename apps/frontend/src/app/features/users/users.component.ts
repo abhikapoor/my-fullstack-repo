@@ -11,6 +11,11 @@ import { FormBuilder } from '@angular/forms';
 import { EditUserDialogComponent } from './edit-user-dialog.component';
 import { DatePipe } from '@angular/common';
 import { selectCurrentUser } from '../../core/store/auth/auth.selectors';
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { TagModule } from 'primeng/tag';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-users',
@@ -22,16 +27,21 @@ import { selectCurrentUser } from '../../core/store/auth/auth.selectors';
     CardModule,
     EditUserDialogComponent,
     DatePipe,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
+    TagModule,
+    SelectModule
   ],
 })
 export class UsersComponent {
   private store = inject(Store);
   private fb = inject(FormBuilder);
-
+  isSorted: boolean = false;
   users = toSignal(this.store.select(selectAllUsers), { initialValue: [] });
   me = toSignal(this.store.select(selectCurrentUser));
   isAdmin = computed(() => this.me()?.role === Role.ADMIN);
-
+  roles: string[] = Object.values(Role);
   editDialogVisible = false;
   selectedUser: SafeUser | null = null;
 
@@ -55,4 +65,5 @@ export class UsersComponent {
     this.editDialogVisible = false;
     this.selectedUser = null;
   }
+
 }

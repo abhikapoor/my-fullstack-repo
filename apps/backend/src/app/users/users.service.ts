@@ -12,8 +12,13 @@ import { prisma } from '@my-fullstack-repo/shared-prisma-client';
 
 @Injectable()
 export class UsersService {
-  async getAllUsers(): Promise<SafeUser[]> {
-    const users: User[] = await prisma.user.findMany();
+  async getAllUsers(currentUserId: string): Promise<SafeUser[]> {
+    console.log('currentUserId',currentUserId)
+    const users: User[] = await prisma.user.findMany({
+      where: {
+        id: currentUserId ? { not: currentUserId } : undefined
+      },
+    });
     return users.map(({ password, ...rest }) => rest);
   }
 

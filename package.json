@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "db:build": "docker build -t my-postgres -f apps/backend/docker/docker.postgres apps/backend/docker",
-    "db:start": "docker run --name my-postgres -p 5432:5432 my-postgres",
+    "db:start": "docker run --name my-postgres -p 5432:5432 my-postgres -v pgdata:/var/lib/postgresql/data my-postgres",
     "db:setup": "npm run db:migrate && npm run db:seed",
     "db:migrate": "npx prisma db push --schema=apps/backend/prisma/schema.prisma",
     "db:seed": "ts-node --project apps/backend/tsconfig.app.json -r tsconfig-paths/register  apps/backend/prisma/seed.ts",

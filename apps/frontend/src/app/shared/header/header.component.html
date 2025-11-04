@@ -9,7 +9,7 @@
   <div class="flex items-center gap-4">
     <p-avatar
       shape="circle"
-      icon="pi pi-user"
+      [image]="isAdmin() ? './admin.ico' : './user.ico'"
       styleClass="cursor-pointer"
       (click)="openEditDialog()"
     ></p-avatar>

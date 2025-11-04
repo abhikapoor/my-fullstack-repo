@@ -24,8 +24,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async findAll(): Promise<SafeUser[]> {
-    return this.usersService.getAllUsers();
+  async findAll(@Req() req: AuthenticatedRequest): Promise<SafeUser[]> {
+    return this.usersService.getAllUsers(req.user.userId);
   }
 
   @Get('me')

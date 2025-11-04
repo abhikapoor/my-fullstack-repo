@@ -11,7 +11,7 @@ async function main() {
 
   const users = [];
 
-  for (let i = 1; i <= 8; i++) {
+  for (let i = 1; i <= 20; i++) {
     users.push({
       email: `user${i}@example.com`,
       password: await bcrypt.hash('password123', 10),
@@ -25,7 +25,7 @@ async function main() {
     });
   }
 
-  for (let i = 1; i <= 2; i++) {
+  for (let i = 1; i <= 10; i++) {
     users.push({
       email: `admin${i}@example.com`,
       password: await bcrypt.hash('adminpass', 10),
@@ -45,7 +45,7 @@ async function main() {
     skipDuplicates: true, // optional
   });
 
-  console.log('Inserted 10 users (8 users + 2 admins)');
+  console.log('Inserted 30 users (20 users + 10 admins)');
 
   console.log('Seeding database finished successfully...');
 }

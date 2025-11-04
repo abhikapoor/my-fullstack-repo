@@ -43,7 +43,6 @@ export class LoginComponent {
   loading = toSignal(this.store.select(selectAuthLoading), {
     initialValue: false,
   });
-  error = toSignal(this.store.select(selectAuthError));
 
   onSubmit(): void {
     if (this.form.valid) {
