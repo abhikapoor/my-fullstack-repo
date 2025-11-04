@@ -54,4 +54,14 @@ export class UsersService {
       throw new BadRequestException(error);
     }
   }
+
+  async getCurrentUser(id: string): Promise<SafeUser> {
+    console.log('UsersService - getCurrentUser ID:', id);
+    const user: User = await prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    const { password, ...rest } = user;
+    return rest;
+  }
 }

@@ -4,4 +4,5 @@ export type AdminUpdatable = Omit<
   User,
   'id' | 'createdAt' | 'updatedAt' | 'email' | 'password'
 >;
-export { User, Role };
+export type { User };
+export { Role };

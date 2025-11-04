@@ -1,0 +1,37 @@
+<header
+  class="w-full bg-gray-600 dark:bg-gray-800 p-2 flex justify-between items-center shadow-md"
+>
+  <div class="flex items-center gap-2">
+    <h1 class="text-2xl  text-white dark:text-gray-600">My Full Stack App</h1>
+  </div>
+
+  @if(currentUser()) {
+  <div class="flex items-center gap-4">
+    <p-avatar
+      shape="circle"
+      icon="pi pi-user"
+      styleClass="cursor-pointer"
+      (click)="openEditDialog()"
+    ></p-avatar>
+
+    <button
+      pButton
+      type="button"
+      label="Sign Out"
+      class="p-button-outlined p-button-secondary "
+      (click)="signOut()"
+      style="color: white"
+    ></button>
+  </div>
+  }
+</header>
+
+@if(editDialogVisible()) {
+<app-edit-user-dialog
+  [visible]="editDialogVisible()"
+  [user]="currentUser()"
+  (save)="saveUser($event)"
+  (cancel)="cancelEdit()"
+  [isAdmin]="isAdmin()"
+></app-edit-user-dialog>
+}

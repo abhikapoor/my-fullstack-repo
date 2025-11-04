@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcome } from './nx-welcome';
+import { RouterOutlet } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
+import {MessageComponent} from './shared/message/message.component'
 
 @Component({
-  imports: [NxWelcome, RouterModule],
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, ToastModule, HeaderComponent, FooterComponent,MessageComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
 })
-export class App {
-  protected title = 'frontend';
-}
+export class AppComponent {}

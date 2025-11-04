@@ -1,0 +1,95 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '45rem' }"
+  [baseZIndex]="1000"
+  (onHide) = "onCancel()"
+  [contentStyle]="{ height: '500px', overflow: 'auto' }"
+  [closeOnEscape]="true" 
+  [closable]="true"
+>
+  <!-- Header -->
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <p-avatar icon="pi pi-user" shape="circle" styleClass="p-mr-2"></p-avatar>
+      <!-- <p-avatar *ngIf="user?.avatarUrl" [image]="user.avatarUrl" shape="circle"></p-avatar> -->
+      <span class="text-2xl font-bold whitespace-nowrap"
+        >{{ user?.firstName }} {{ user?.lastName }}</span
+      >
+    </div>
+  </ng-template>
+
+  <!-- Form -->
+  <form [formGroup]="userForm" class="flex flex-col gap-5">
+    <div class="flex items-center gap-4">
+      <label for="firstName" class="font-semibold w-24">First Name</label>
+      <input
+        pInputText
+        id="firstName"
+        class="flex-auto"
+        formControlName="firstName"
+      />
+      <!-- <small class="p-error" [hidden]="!userForm.controls.['firstName'].invalid || !userForm.controls.firstName.touched">
+        First Name is required
+      </small> -->
+    </div>
+
+    <div class="flex items-center gap-4">
+      <label for="lastName" class="font-semibold w-24">Last Name</label>
+      <input
+        pInputText
+        id="lastName"
+        class="flex-auto"
+        formControlName="lastName"
+      />
+    </div>
+
+    <div class="flex items-center gap-4">
+      <label for="dob" class="font-semibold w-24">DOB</label>
+      <p-datepicker
+        id="dob"
+        class="flex-auto"
+        formControlName="dob"
+        dateFormat="yy-mm-dd"
+        [showIcon]="true"
+      ></p-datepicker>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <label for="address" class="font-semibold w-24">Address</label>
+      <input
+        pInputText
+        id="address"
+        class="flex-auto"
+        formControlName="address"
+      />
+    </div>
+
+    <div class="flex items-center gap-4">
+      <label for="role" class="font-semibold w-24">Role</label>
+      <p-select
+        [options]="roles"
+        formControlName="role"
+        placeholder="Select a role"
+        class="flex-auto"
+        [disabled]="!isAdmin"
+      ></p-select>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <ng-template #footer>
+    <p-button
+      label="Cancel"
+      [text]="true"
+      severity="secondary"
+      (click)="onCancel()"
+    />
+    <p-button
+      label="Save"
+      [outlined]="true"
+      severity="secondary"
+      (click)="onSave()"
+    />
+  </ng-template>
+</p-dialog>

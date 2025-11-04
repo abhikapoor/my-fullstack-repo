@@ -10,6 +10,10 @@ import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'http://localhost:4200', // your Angular dev URL
+    credentials: true, // allow cookies (needed if you’re using cookie-based auth)
+  });
   app.use(cookieParser());
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
