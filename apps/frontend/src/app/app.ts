@@ -9,6 +9,6 @@ import {MessageComponent} from './shared/message/message.component'
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, ToastModule, HeaderComponent, FooterComponent,MessageComponent],
-  templateUrl: './app.html',
+  templateUrl: './app.component.html',
 })
 export class AppComponent {}

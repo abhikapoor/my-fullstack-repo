@@ -12,7 +12,8 @@
     "backend:start": "npx nx serve backend",
     "backend:build": "npx nx build backend",
     "frontend:start": "npx nx serve frontend",
-    "frontend:build": "npx nx build frontend"
+    "frontend:build": "npx nx build frontend",
+    "deploy": "./deploy.sh"
   },
   "private": true,
   "devDependencies": {
