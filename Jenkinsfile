@@ -12,14 +12,17 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 echo 'Cloning GitHub repository with necessary history depth...'
-                // *** FIX APPLIED HERE: Add depth: 2 to ensure HEAD~1 is available ***
-                git url: 'https://github.com/abhikapoor/my-fullstack-repo.git', branch: 'main', depth: 2
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'main']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'CloneOption', depth: 2, shallow: true]],
+                    userRemoteConfigs: [[url: 'https://github.com/abhikapoor/my-fullstack-repo.git']]
+                ])
             }
-        }
 
         stage('Install Dependencies') {
             steps {
