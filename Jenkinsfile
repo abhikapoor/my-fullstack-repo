@@ -23,6 +23,7 @@ pipeline {
                     userRemoteConfigs: [[url: 'https://github.com/abhikapoor/my-fullstack-repo.git']]
                 ])
             }
+        }
 
         stage('Install Dependencies') {
             steps {
