@@ -15,8 +15,9 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Cloning GitHub repository...'
-                git url: 'https://github.com/abhikapoor/my-fullstack-repo.git', branch: 'main'
+                echo 'Cloning GitHub repository with necessary history depth...'
+                // *** FIX APPLIED HERE: Add depth: 2 to ensure HEAD~1 is available ***
+                git url: 'https://github.com/abhikapoor/my-fullstack-repo.git', branch: 'main', depth: 2
             }
         }
 
@@ -30,6 +31,7 @@ pipeline {
         stage('Determine Changes') {
             steps {
                 script {
+                    // This command is now guaranteed to work because the clone depth is 2
                     def changes = sh(
                         script: "git diff --name-only HEAD~1 HEAD",
                         returnStdout: true
@@ -92,6 +94,8 @@ pipeline {
             }
             steps {
                 echo "Deploying frontend to Nginx..."
+                // NOTE: Using 'sh' with multiple lines can be prone to issues;
+                // I've kept your original format, but ensure your shell executes these commands correctly.
                 sh """
                     sudo rm -rf /var/www/html/*
                     sudo cp -r dist/apps/frontend/* /var/www/html/
