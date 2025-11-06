@@ -88,6 +88,12 @@ ssh $USER@$HOST "mkdir -p $REMOTE_BACKEND_DIR; mkdir -p $REMOTE_FRONTEND_DIR"
 ssh $USER@$HOST << EOF
     cd $REMOTE_BACKEND_DIR
 
+    # Load environment variables
+    if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
+    if [ -f ~/.profile ]; then source ~/.profile; fi
+    if [ -f /etc/environment ]; then export \$(grep -v '^#' /etc/environment | xargs); fi
+    echo "Environment variables loaded."
+
     # Clone repo if missing, otherwise reset to latest branch
     if [ ! -d ".git" ]; then
         echo "Cloning repository..."
@@ -108,7 +114,11 @@ ssh $USER@$HOST << EOF
 
     # Generate Prisma client in the build folder
     echo "Generating Prisma client for production..."
-    npx prisma generate --schema=apps/backend/prisma/schema.prisma --output=dist/apps/backend/prisma/generated
+    npx prisma generate --schema=apps/backend/src/prisma/schema.prisma
+
+    # Copy generated Prisma client into dist
+    mkdir -p dist/apps/backend/prisma
+    rsync -avz apps/backend/src/prisma/generated/ dist/apps/backend/prisma/generated/
 
     # Stop old PM2 process if running
     pm2 stop backend || true
