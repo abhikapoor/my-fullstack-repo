@@ -9,6 +9,12 @@ module.exports = {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
+  // 🎯 ADD THIS SECTION: Ignore the Prisma Source Map Warning
+  ignoreWarnings: [
+    /Failed to parse source map from '.*\/prisma\/generated\/runtime\/library\.js\.map'/,
+    { message: /Failed to parse source map/ },
+  ],
+
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',

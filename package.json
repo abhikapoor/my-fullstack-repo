@@ -9,10 +9,12 @@
     "db:migrate": "npx prisma db push --schema=apps/backend/prisma/schema.prisma",
     "db:seed": "ts-node --project apps/backend/tsconfig.app.json -r tsconfig-paths/register  apps/backend/prisma/seed.ts",
     "db:stop": "docker stop my-postgres && docker rm my-postgres",
-    "backend:start": "npx nx serve backend",
+    "backend": "npx nx serve backend",
     "backend:build": "npx nx build backend",
-    "frontend:start": "npx nx serve frontend",
-    "frontend:build": "npx nx build frontend",
+    "frontend": "npx nx serve frontend",
+    "frontend:build": "npx nx build frontend --configuration=production",
+    "postbuild:prod": "cp apps/frontend/src/config/config.prod.json dist/apps/frontend/browser/assets/config.json",
+    "prisma:generate:backend": "prisma generate --schema=apps/backend/src/prisma/schema.prisma",
     "deploy": "./deploy.sh"
   },
   "private": true,
@@ -94,6 +96,8 @@
     "@prisma/client": "^6.18.0",
     "@tailwindcss/cli": "^4.1.16",
     "@tailwindcss/postcss": "^4.1.16",
+    "@tsparticles/angular": "^3.0.0",
+    "@tsparticles/engine": "^3.9.1",
     "axios": "^1.6.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
@@ -105,6 +109,7 @@
     "primeng": "^20.3.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "tsparticles": "^3.9.1",
     "zone.js": "~0.15.0"
   }
 }

@@ -1,54 +1,65 @@
-<p-card
-  header="Welcome Back"
-  subheader="Sign in to continue"
-  [style]="{width: '600px'}"
-  class=" shadow-lg rounded-2xl bg-white p-8"
->
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
-    <!-- Email -->
-    <div>
-      <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-        Email
-      </label>
-      <input
-        pInputText
-        id="email"
-        type="email"
-        formControlName="email"
-        class="w-full"
-        placeholder="you@example.com"
-      />
-      @if (form.controls['email'].invalid && form.controls['email'].touched) {
-        <p-message severity="error" text="Valid email required"></p-message>
+<div class="flex items-center justify-center min-h-[calc(100vh-11rem)] relative">
+  <div class="absolute inset-0 z-0 w-full h-full overflow-hidden">
+    <ngx-particles
+      [id]="'tsparticles'"
+      [options]="particlesOptions"
+      
+    ></ngx-particles>
+  </div>
+
+  <p-card
+    header="Welcome Back"
+    subheader="Sign in to continue"
+    [style]="{width: '600px'}"
+    class="shadow-lg rounded-xl bg-white dark:bg-[#22577a] p-6 relative z-10"
+  >
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-white mb-2">
+          Email
+        </label>
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          class="w-full"
+          placeholder="you@example.com"
+        />
+        @if(form.controls['email'].invalid && form.controls['email'].touched){
+          <ng-container>
+          <p-message severity="error" text="Valid email required"></p-message>
+        </ng-container>
+        }
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-semibold text-gray-700 dark:text-white mb-2">
+          Password
+        </label>
+        <input
+          pInputText
+          id="password"
+          type="password"
+          formControlName="password"
+          class="w-full"
+          placeholder="••••••••"
+        />
+        @if(form.controls['password'].invalid && form.controls['password'].touched){
+        <ng-container>
+          <p-message severity="error" text="Password required"></p-message>
+        </ng-container>
       }
-    </div>
+      </div>
 
-    <!-- Password -->
-    <div>
-      <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
-        Password
-      </label>
-      <input
-        pInputText
-        id="password"
-        type="password"
-        formControlName="password"
-        class="w-full"
-        placeholder="••••••••"
-      />
-      @if (form.controls['password'].invalid && form.controls['password'].touched) {
-        <p-message severity="error" text="Password required"></p-message>
-      }
-    </div>
+      <p-button
+        label="Login"
+        icon="pi pi-sign-in"
+        type="submit"
+        styleClass="w-full p-button-rounded p-button-lg "
+        [style]="{ backgroundColor: '#000000' ,color: '#ffffff' , border: '1px solid #ffffff' }"
+      ></p-button>
 
-    <!-- Submit -->
-    <p-button
-      label="Login"
-      icon="pi pi-sign-in"
-      [loading]="loading()"
-      type="submit"
-      styleClass="w-full p-button-rounded p-button-lg"
-    ></p-button>
-
-  </form>
-</p-card>
+    </form>
+  </p-card>
+</div>

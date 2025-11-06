@@ -2,16 +2,19 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SafeUser } from '@my-fullstack-repo/shared-prisma-types';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/api';
+  private config = inject(ConfigService);
+  private baseUrl = this.config.getConfig().apiBaseUrl;
   private http = inject(HttpClient);
 
   login(credentials: {
     email: string;
     password: string;
   }): Observable<SafeUser> {
+    console.log('dgfdfgdgdf', this.config.getConfig());
     return this.http.post<SafeUser>(`${this.baseUrl}/auth/login`, credentials, {
       withCredentials: true,
     });

@@ -8,15 +8,15 @@ import {
   SafeUser,
   AdminUpdatable,
 } from '@my-fullstack-repo/shared-prisma-types';
-import { prisma } from '@my-fullstack-repo/shared-prisma-client';
+import { prisma } from '../../client';
 
 @Injectable()
 export class UsersService {
   async getAllUsers(currentUserId: string): Promise<SafeUser[]> {
-    console.log('currentUserId',currentUserId)
+    console.log('currentUserId', currentUserId);
     const users: User[] = await prisma.user.findMany({
       where: {
-        id: currentUserId ? { not: currentUserId } : undefined
+        id: currentUserId ? { not: currentUserId } : undefined,
       },
     });
     return users.map(({ password, ...rest }) => rest);

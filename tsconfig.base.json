@@ -16,10 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@my-fullstack-repo/shared-prisma-types": [
-        "libs/shared/prisma/src/index.ts"
-      ],
-      "@my-fullstack-repo/shared-prisma-client": [
-        "libs/shared/prisma/src/client.ts"
+        "libs/shared/prisma-types/src/index.ts"
       ]
     }
   },

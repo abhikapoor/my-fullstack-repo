@@ -35,8 +35,8 @@ const config_1 = __webpack_require__(5);
 const app_controller_1 = __webpack_require__(6);
 const app_service_1 = __webpack_require__(7);
 const users_module_1 = __webpack_require__(8);
-const auth_module_1 = __webpack_require__(34);
-const jwt_stratergy_1 = __webpack_require__(40);
+const auth_module_1 = __webpack_require__(35);
+const jwt_stratergy_1 = __webpack_require__(41);
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -152,19 +152,19 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UsersService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const shared_prisma_client_1 = __webpack_require__(10);
+const client_1 = __webpack_require__(10);
 let UsersService = class UsersService {
     async getAllUsers(currentUserId) {
         console.log('currentUserId', currentUserId);
-        const users = await shared_prisma_client_1.prisma.user.findMany({
+        const users = await client_1.prisma.user.findMany({
             where: {
-                id: currentUserId ? { not: currentUserId } : undefined
+                id: currentUserId ? { not: currentUserId } : undefined,
             },
         });
         return users.map(({ password, ...rest }) => rest);
     }
     async getUserById(id) {
-        const user = await shared_prisma_client_1.prisma.user.findUnique({ where: { id } });
+        const user = await client_1.prisma.user.findUnique({ where: { id } });
         if (!user) {
             throw new common_1.NotFoundException(`User with id ${id} not found`);
         }
@@ -172,7 +172,7 @@ let UsersService = class UsersService {
         return rest;
     }
     async updateUser(updatedUser, id) {
-        const target = await shared_prisma_client_1.prisma.user.findUnique({
+        const target = await client_1.prisma.user.findUnique({
             where: { id },
         });
         if (!target)
@@ -187,7 +187,7 @@ let UsersService = class UsersService {
             role: updatedUser.role ?? target.role,
         };
         try {
-            const result = await shared_prisma_client_1.prisma.user.update({
+            const result = await client_1.prisma.user.update({
                 where: { id },
                 data: dataToUpdate,
             });
@@ -200,7 +200,7 @@ let UsersService = class UsersService {
     }
     async getCurrentUser(id) {
         console.log('UsersService - getCurrentUser ID:', id);
-        const user = await shared_prisma_client_1.prisma.user.findUnique({ where: { id } });
+        const user = await client_1.prisma.user.findUnique({ where: { id } });
         if (!user) {
             throw new common_1.NotFoundException(`User with id ${id} not found`);
         }
@@ -336,7 +336,7 @@ const config = {
             "value": "prisma-client-js"
         },
         "output": {
-            "value": "/Users/abhikapoor/Documents/projects/my-fullstack-repo/libs/shared/prisma/src/generated",
+            "value": "/Users/abhikapoor/Documents/projects/my-fullstack-repo/apps/backend/src/prisma/generated",
             "fromEnvVar": null
         },
         "config": {
@@ -347,23 +347,28 @@ const config = {
                 "fromEnvVar": null,
                 "value": "darwin-arm64",
                 "native": true
+            },
+            {
+                "fromEnvVar": null,
+                "value": "debian-openssl-3.0.x"
             }
         ],
         "previewFeatures": [],
-        "sourceFilePath": "/Users/abhikapoor/Documents/projects/my-fullstack-repo/apps/backend/prisma/schema.prisma",
+        "sourceFilePath": "/Users/abhikapoor/Documents/projects/my-fullstack-repo/apps/backend/src/prisma/schema.prisma",
         "isCustomOutput": true
     },
     "relativeEnvPaths": {
         "rootEnvPath": null,
-        "schemaEnvPath": "../../../../../apps/backend/prisma/.env"
+        "schemaEnvPath": "../.env"
     },
-    "relativePath": "../../../../../apps/backend/prisma",
+    "relativePath": "..",
     "clientVersion": "6.18.0",
     "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
     "datasourceNames": [
         "db"
     ],
     "activeProvider": "postgresql",
+    "postinstall": false,
     "inlineDatasources": {
         "db": {
             "url": {
@@ -372,16 +377,16 @@ const config = {
             }
         }
     },
-    "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../../../libs/shared/prisma/src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(uuid())\n  email     String    @unique\n  password  String\n  firstName String\n  lastName  String\n  role      Role      @default(USER)\n  dob       DateTime?\n  address   String?\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n}\n\nenum Role {\n  USER\n  ADMIN\n}\n",
-    "inlineSchemaHash": "b5edb2cbbcb1b272b2c3fc7e2c7a2dce58062efdced7308b3ea99aa404040bc4",
+    "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(uuid())\n  email     String    @unique\n  password  String\n  firstName String\n  lastName  String\n  role      Role      @default(USER)\n  dob       DateTime?\n  address   String?\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n}\n\nenum Role {\n  USER\n  ADMIN\n}\n",
+    "inlineSchemaHash": "1db961f18835b53427bdf25443b55a21f00bde89655ac96e41ee52fa0c7a02ef",
     "copyEngine": true
 };
 const fs = __webpack_require__(26);
 config.dirname = __dirname;
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
     const alternativePaths = [
-        "libs/shared/prisma/src/generated",
-        "shared/prisma/src/generated",
+        "apps/backend/src/prisma/generated",
+        "backend/src/prisma/generated",
     ];
     const alternativePath = alternativePaths.find((altPath) => {
         return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'));
@@ -403,10 +408,13 @@ exports.PrismaClient = PrismaClient;
 Object.assign(exports, Prisma);
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "libs/shared/prisma/src/generated/libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "apps/backend/src/prisma/generated/libquery_engine-darwin-arm64.dylib.node");
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "apps/backend/src/prisma/generated/libquery_engine-debian-openssl-3.0.x.so.node");
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "libs/shared/prisma/src/generated/schema.prisma");
+path.join(process.cwd(), "apps/backend/src/prisma/generated/schema.prisma");
 
 
 /***/ }),
@@ -3951,10 +3959,10 @@ const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const users_service_1 = __webpack_require__(9);
 const shared_prisma_types_1 = __webpack_require__(28);
-const roles_decorator_1 = __webpack_require__(29);
-const jwt_auth_guard_1 = __webpack_require__(30);
-const roles_guard_1 = __webpack_require__(32);
-const authenticated_request_1 = __webpack_require__(33);
+const roles_decorator_1 = __webpack_require__(30);
+const jwt_auth_guard_1 = __webpack_require__(31);
+const roles_guard_1 = __webpack_require__(33);
+const authenticated_request_1 = __webpack_require__(34);
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -4018,12 +4026,27 @@ exports.UsersController = UsersController = tslib_1.__decorate([
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Role = void 0;
-const client_1 = __webpack_require__(11);
-Object.defineProperty(exports, "Role", ({ enumerable: true, get: function () { return client_1.Role; } }));
+var role_1 = __webpack_require__(29);
+Object.defineProperty(exports, "Role", ({ enumerable: true, get: function () { return role_1.Role; } }));
 
 
 /***/ }),
 /* 29 */
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Role = void 0;
+var Role;
+(function (Role) {
+    Role["USER"] = "USER";
+    Role["ADMIN"] = "ADMIN";
+})(Role || (exports.Role = Role = {}));
+
+
+/***/ }),
+/* 30 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4037,7 +4060,7 @@ exports.Roles = Roles;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4046,7 +4069,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtAuthGuard = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(31);
+const passport_1 = __webpack_require__(32);
 let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
 };
 exports.JwtAuthGuard = JwtAuthGuard;
@@ -4056,14 +4079,14 @@ exports.JwtAuthGuard = JwtAuthGuard = tslib_1.__decorate([
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("@nestjs/passport");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4100,7 +4123,7 @@ exports.RolesGuard = RolesGuard = tslib_1.__decorate([
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -4109,7 +4132,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4119,8 +4142,8 @@ exports.AuthModule = void 0;
 const tslib_1 = __webpack_require__(1);
 // apps/backend/src/users/users.module.ts
 const common_1 = __webpack_require__(2);
-const auth_service_1 = __webpack_require__(35);
-const auth_controller_1 = __webpack_require__(38);
+const auth_service_1 = __webpack_require__(36);
+const auth_controller_1 = __webpack_require__(39);
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -4133,7 +4156,7 @@ exports.AuthModule = AuthModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4143,16 +4166,16 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const shared_prisma_client_1 = __webpack_require__(10);
-const bcrypt = tslib_1.__importStar(__webpack_require__(36));
-const jwt = tslib_1.__importStar(__webpack_require__(37));
+const client_1 = __webpack_require__(10);
+const bcrypt = tslib_1.__importStar(__webpack_require__(37));
+const jwt = tslib_1.__importStar(__webpack_require__(38));
 const config_1 = __webpack_require__(5);
 let AuthService = class AuthService {
     constructor(configService) {
         this.configService = configService;
     }
     async login(email, password) {
-        const user = await shared_prisma_client_1.prisma.user.findUnique({ where: { email } });
+        const user = await client_1.prisma.user.findUnique({ where: { email } });
         if (!user)
             return null;
         const isValid = await bcrypt.compare(password, user.password);
@@ -4171,21 +4194,21 @@ exports.AuthService = AuthService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("bcrypt");
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("jsonwebtoken");
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4195,8 +4218,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthController = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const auth_service_1 = __webpack_require__(35);
-const express_1 = __webpack_require__(39);
+const auth_service_1 = __webpack_require__(36);
+const express_1 = __webpack_require__(40);
 const config_1 = __webpack_require__(5);
 let AuthController = class AuthController {
     constructor(authService, configService) {
@@ -4246,14 +4269,14 @@ exports.AuthController = AuthController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("express");
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4263,8 +4286,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtStrategy = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(31);
-const passport_jwt_1 = __webpack_require__(41);
+const passport_1 = __webpack_require__(32);
+const passport_jwt_1 = __webpack_require__(42);
 const config_1 = __webpack_require__(5);
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor(configService) {
@@ -4288,14 +4311,14 @@ exports.JwtStrategy = JwtStrategy = tslib_1.__decorate([
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ ((module) => {
 
 "use strict";
@@ -4344,12 +4367,12 @@ const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const core_1 = __webpack_require__(3);
 const app_module_1 = __webpack_require__(4);
-const cookie_parser_1 = tslib_1.__importDefault(__webpack_require__(42));
+const cookie_parser_1 = tslib_1.__importDefault(__webpack_require__(43));
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
-        origin: 'http://localhost:4200', // your Angular dev URL
-        credentials: true, // allow cookies (needed if you’re using cookie-based auth)
+        origin: 'http://localhost:4200',
+        credentials: true,
     });
     app.use((0, cookie_parser_1.default)());
     const globalPrefix = 'api';
@@ -4364,4 +4387,3 @@ bootstrap();
 
 /******/ })()
 ;
-//# sourceMappingURL=main.js.map
