@@ -4,17 +4,14 @@
 USER="root"
 HOST="206.189.63.234"
 REMOTE_BACKEND_DIR="/home/app/backend"
-REMOTE_FRONTEND_DIR="/var/www/html"
 
-echo "Starting deployment..."
+echo "🚀 Starting backend deployment..."
 
 # ===============================================
 # 0. PREPARE SERVER DIRECTORIES
 # ===============================================
-echo "Ensuring remote directories exist..."
-# 0. PREPARE SERVER DIRECTORIES (ensure directories exist before rsync)
-echo "Ensuring remote directories exist..."
-ssh $USER@$HOST "mkdir -p $REMOTE_BACKEND_DIR && mkdir -p $REMOTE_BACKEND_DIR/prisma && mkdir -p $REMOTE_FRONTEND_DIR && echo '✅ Remote directories ready'"
+echo "Ensuring remote backend directories exist..."
+ssh $USER@$HOST "mkdir -p $REMOTE_BACKEND_DIR && mkdir -p $REMOTE_BACKEND_DIR/prisma && echo '✅ Backend directories ready'"
 
 # ===============================================
 # 1. BUILD BACKEND LOCALLY
@@ -23,30 +20,19 @@ echo "Building backend locally..."
 npx nx build backend --prod
 
 # ===============================================
-# 2. BUILD FRONTEND LOCALLY
+# 2. TRANSFER BACKEND TO SERVER
 # ===============================================
-echo "Building frontend locally..."
-npx nx build frontend --prod
-
-# Copy production config into frontend dist
-cp apps/frontend/src/config/config.prod.json dist/apps/frontend/browser/assets/config.json
-
-# ===============================================
-# 3. TRANSFER BACKEND AND FRONTEND TO SERVER
-# ===============================================
-echo "Transferring backend build and Prisma schema..."
+echo "Transferring backend build..."
 rsync -avz --delete dist/apps/backend/ $USER@$HOST:$REMOTE_BACKEND_DIR
+
 echo "Transferring Prisma schema..."
 rsync -avz apps/backend/src/prisma/schema.prisma $USER@$HOST:$REMOTE_BACKEND_DIR/prisma/ --rsync-path="mkdir -p $REMOTE_BACKEND_DIR/prisma && rsync"
 
-echo "Transferring frontend build..."
-rsync -avz --delete dist/apps/frontend/browser/ $USER@$REMOTE_FRONTEND_DIR
-
 # ===============================================
-# 4. REMOTE SERVER SETUP
+# 3. REMOTE SERVER SETUP
 # ===============================================
 ssh $USER@$HOST << EOF
-    cd /home/app/backend
+    cd $REMOTE_BACKEND_DIR
 
     echo "Installing production dependencies..."
     npm install --production
@@ -54,12 +40,10 @@ ssh $USER@$HOST << EOF
     echo "Generating Prisma client..."
     npx prisma generate --schema=prisma/schema.prisma
 
-    echo "Starting backend via PM2..."
+    echo "Restarting backend with PM2..."
     pm2 delete backend || true
     pm2 start main.js --name backend --update-env
     pm2 save
 EOF
 
-
-
-echo "Deployment finished successfully!"
+echo "✅ Backend deployment finished successfully!"

@@ -10,11 +10,13 @@ export class UserService {
   private config = inject(ConfigService);
   private baseUrl = this.config.getConfig().apiBaseUrl;
   getAll(): Observable<SafeUser[]> {
-    return this.http.get<SafeUser[]>(`${this.baseUrl}/users`, { withCredentials: true });
+    return this.http.get<SafeUser[]>(`${this.baseUrl}/users`, {
+      withCredentials: true,
+    });
   }
 
   updateUser(id: string, data: Partial<SafeUser>): Observable<SafeUser> {
-    return this.http.patch<SafeUser>(`${this.baseUrl}/${id}`, data, {
+    return this.http.patch<SafeUser>(`${this.baseUrl}/users/${id}`, data, {
       withCredentials: true,
     });
   }

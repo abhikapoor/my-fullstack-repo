@@ -13,7 +13,6 @@ import { prisma } from '../../client';
 @Injectable()
 export class UsersService {
   async getAllUsers(currentUserId: string): Promise<SafeUser[]> {
-    console.log('currentUserId', currentUserId);
     const users: User[] = await prisma.user.findMany({
       where: {
         id: currentUserId ? { not: currentUserId } : undefined,

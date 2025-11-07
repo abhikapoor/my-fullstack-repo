@@ -15,7 +15,9 @@
     "frontend:build": "npx nx build frontend --configuration=production",
     "postbuild:prod": "cp apps/frontend/src/config/config.prod.json dist/apps/frontend/browser/assets/config.json",
     "prisma:generate:backend": "prisma generate --schema=apps/backend/src/prisma/schema.prisma",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy-frontend.sh && deploy-backend.sh",
+    "deploy:frontend": "./deploy-frontend.sh",
+    "deploy:backend": "./deploy-backend.sh"
   },
   "private": true,
   "devDependencies": {
