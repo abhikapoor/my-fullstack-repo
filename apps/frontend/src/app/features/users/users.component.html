@@ -1,16 +1,16 @@
 <p-card class="w-full shadow-lg rounded-xl bg-white p-6">
   <div class="flex items-center justify-between mb-4">
     <div class="flex items-center gap-3">
-      <i class="pi pi-users text-2xl text-gray-700  dark:text-white"></i>
+      <i class="pi pi-users text-2xl text-gray-700 dark:text-white"></i>
       <div>
-        <h2 class="text-xl font-bold text-gray-800  dark:text-white">Users</h2>
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Users</h2>
         <p class="text-gray-500 text-sm dark:text-white">
           View, update, or manage users in your system
         </p>
       </div>
     </div>
   </div>
-  
+
   <div class="w-full border border-gray-200 rounded-lg">
     <div class="overflow-x-auto">
       <p-table
@@ -21,131 +21,141 @@
         [rows]="10"
         [rowsPerPageOptions]="[10, 20, 30]"
         [paginator]="true"
-        [globalFilterFields]="['firstName', 'lastName', 'email', 'role', 'address', 'dob']"
+        [globalFilterFields]="[
+          'firstName',
+          'lastName',
+          'email',
+          'role',
+          'address',
+          'dob'
+        ]"
         paginatorDropdownAppendTo="body"
-        [scrollable]="true" 
+        [scrollable]="true"
       >
         <ng-template #caption>
-            <div class="flex">
-                <p-iconfield iconPosition="left" class="ml-auto">
-                    <p-inputicon>
-                        <i class="pi pi-search"></i>
-                    </p-inputicon>
-                    <input
-                        pInputText
-                        type="text"
-                        (input)="dt.filterGlobal($event.target.value, 'contains')"
-                        placeholder="Search users..."
-                    />
-                </p-iconfield>
-            </div>
+          <div class="flex">
+            <p-iconfield iconPosition="left" class="ml-auto">
+              <p-inputicon>
+                <i class="pi pi-search"></i>
+              </p-inputicon>
+              <input
+                pInputText
+                type="text"
+                (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Search users..."
+              />
+            </p-iconfield>
+          </div>
         </ng-template>
 
         <ng-template #header>
-            <tr>
-                <th style="width: 150px;">First Name</th>
-                <th style="width: 150px;">Last Name</th>
-                <th style="width: 250px;">Email</th>
-                <th style="width: 150px;">DOB</th>
-                <th style="width: 250px;">Address</th>
-                <th style="width: 150px;">Role</th>
-                <th style="width: 100px;">Actions</th>
-            </tr>
+          <tr>
+            <th style="width: 150px">First Name</th>
+            <th style="width: 150px">Last Name</th>
+            <th style="width: 250px">Email</th>
+            <th style="width: 150px">DOB</th>
+            <th style="width: 250px">Address</th>
+            <th style="width: 150px">Role</th>
+            <th style="width: 100px">Actions</th>
+          </tr>
 
-            <tr>
-                <th>
-                    <p-columnFilter
-                        type="text"
-                        field="firstName"
-                        placeholder="Search..."
-                        filterOn="input"
-                    ></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter
-                        type="text"
-                        field="lastName"
-                        placeholder="Search..."
-                        filterOn="input"
-                    ></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter
-                        type="text"
-                        field="email"
-                        placeholder="Search..."
-                        filterOn="input"
-                    ></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter
-                        type="text"
-                        field="dob"
-                        placeholder="Search..."
-                        filterOn="input"
-                    ></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter
-                        type="text"
-                        field="address"
-                        placeholder="Search..."
-                        filterOn="input"
-                    ></p-columnFilter>
-                </th>
+          <tr>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="firstName"
+                placeholder="Search..."
+                filterOn="input"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="lastName"
+                placeholder="Search..."
+                filterOn="input"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="email"
+                placeholder="Search..."
+                filterOn="input"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="dob"
+                placeholder="Search..."
+                filterOn="input"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="address"
+                placeholder="Search..."
+                filterOn="input"
+              ></p-columnFilter>
+            </th>
 
-                <th>
-                    <p-columnFilter field="role" matchMode="equals" [showMenu]="false">
-                        <ng-template #filter let-value let-filter="filterCallback">
-                            <p-select
-                                [options]="roles"
-                                placeholder="Select Role"
-                                (onChange)="filter($event.value)"
-                                [showClear]="true"
-                                style="min-width: 10rem"
-                                
-                                appendTo="body" 
-                            ></p-select>
-                        </ng-template>
-                    </p-columnFilter>
-                </th>
-                <th></th>
-            </tr>
+            <th>
+              <p-columnFilter
+                field="role"
+                matchMode="equals"
+                [showMenu]="false"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <p-select
+                    [options]="roles"
+                    placeholder="Select Role"
+                    (onChange)="filter($event.value)"
+                    [showClear]="true"
+                    style="min-width: 10rem"
+                    appendTo="body"
+                  ></p-select>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th></th>
+          </tr>
         </ng-template>
 
         <ng-template #body let-user>
-            <tr>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.dob | date: 'yyyy-MM-dd' }}</td>
-                <td
-                    class="truncate"
-                    style="max-width: 250px;"
-                    title="{{ user.address }}"
-                >
-                    {{ user.address }}
-                </td>
-                <td>{{ user.role }}</td>
-                <td>
-                    <button
-                        pButton
-                        type="button"
-                        icon="pi pi-pencil"
-                        class="p-button-rounded p-button-text p-button-sm"
-                        (click)="openEditDialog(user)"
-                        [disabled]="!isAdmin()"
-                    ></button>
-                </td>
-            </tr>
+          <tr>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.dob | date : 'yyyy-MM-dd' }}</td>
+            <td
+              class="truncate"
+              style="max-width: 250px"
+              title="{{ user.address }}"
+            >
+              {{ user.address }}
+            </td>
+            <td>{{ user.role }}</td>
+            <td>
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text p-button-sm"
+                (click)="openEditDialog(user)"
+                [disabled]="!isAdmin()"
+              ></button>
+            </td>
+          </tr>
         </ng-template>
 
         <ng-template #emptymessage>
-            <tr>
-                <td colspan="7" class="text-center py-3 text-gray-500">
-                    No users found.
-                </td>
-            </tr>
+          <tr>
+            <td colspan="7" class="text-center py-3 text-gray-500">
+              No users found.
+            </td>
+          </tr>
         </ng-template>
       </p-table>
     </div>
@@ -153,11 +163,11 @@
 </p-card>
 
 @if (editDialogVisible) {
-  <app-edit-user-dialog
-    [visible]="editDialogVisible"
-    [user]="selectedUser"
-    (save)="saveUser($event)"
-    (cancel)="cancelEdit()"
-    [isAdmin]="isAdmin()"
-  ></app-edit-user-dialog>
+<app-edit-user-dialog
+  [visible]="editDialogVisible"
+  [user]="selectedUser"
+  (save)="saveUser($event)"
+  (cancel)="cancelEdit()"
+  [isAdmin]="isAdmin()"
+></app-edit-user-dialog>
 }

@@ -6,10 +6,12 @@ import {
   selectCurrentUser,
   selectAuthLoading,
 } from '../store/auth/auth.selectors';
-import { Observable, of } from 'rxjs';
-import { first, filter, switchMap, tap, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { first, filter, switchMap, map } from 'rxjs/operators';
 
-export const authGuard: CanActivateFn = (route, state): Observable<boolean> => {
+let hasLoadedUser = false;
+
+export const authGuard: CanActivateFn = (route, state) => {
   const store = inject(Store);
   const router = inject(Router);
   const url = state.url;
@@ -19,13 +21,16 @@ export const authGuard: CanActivateFn = (route, state): Observable<boolean> => {
     switchMap((user) => {
       if (user) {
         if (url === '/login') {
-          router.navigate(['/home']);
+          router.navigateByUrl('/home');
           return of(false);
         }
         return of(true);
       }
 
-      store.dispatch(loadCurrentUser());
+      if (!hasLoadedUser) {
+        hasLoadedUser = true;
+        store.dispatch(loadCurrentUser());
+      }
 
       return store.select(selectAuthLoading).pipe(
         filter((loading) => loading === false),
@@ -34,15 +39,20 @@ export const authGuard: CanActivateFn = (route, state): Observable<boolean> => {
           store.select(selectCurrentUser).pipe(
             first(),
             map((currentUser) => {
-              if (!currentUser && url !== '/login') {
-                router.navigate(['/login']);
-                return false;
+              if (currentUser) {
+                if (url === '/login') {
+                  router.navigateByUrl('/home');
+                  return false;
+                }
+                return true;
               }
-              if (currentUser && url === '/login') {
-                router.navigate(['/home']);
-                return false;
+
+              if (url === '/login') {
+                return true;
               }
-              return true;
+
+              router.navigateByUrl('/login');
+              return false;
             })
           )
         )

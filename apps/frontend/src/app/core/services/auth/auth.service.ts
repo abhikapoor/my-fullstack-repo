@@ -14,7 +14,6 @@ export class AuthService {
     email: string;
     password: string;
   }): Observable<SafeUser> {
-    console.log('dgfdfgdgdf', this.config.getConfig());
     return this.http.post<SafeUser>(`${this.baseUrl}/auth/login`, credentials, {
       withCredentials: true,
     });
